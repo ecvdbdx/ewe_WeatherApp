@@ -6,9 +6,7 @@ const api = {
     base: "http://api.openweathermap.org/data/2.5/"
   }
 
-
-
-function SearchBar(){
+function WeatherApp(){
 
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
@@ -43,6 +41,7 @@ function SearchBar(){
               {Math.round(weather.main.temp)}°c
             </div>
             <div className="weather">{weather.weather[0].main}</div>
+            <img src={"http://openweathermap.org/img/wn/" + weather.weather[0].icon + "@2x.png"}></img>
         </div>
         ) : ('')}
       </main>
@@ -50,4 +49,4 @@ function SearchBar(){
     );
 }
 
-export default SearchBar;
+export default WeatherApp;
