@@ -17,9 +17,7 @@ class DateBuilder extends Component {
     
     render(){
         return(
-        <div className="location-box">
             <div className="date">{this.date(new Date())}</div>
-        </div>
         );
     }
 }

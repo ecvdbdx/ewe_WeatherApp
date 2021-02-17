@@ -1,51 +1,48 @@
 import React, { useState } from 'react'
 import DateBuilder from './DateBuilder';
+import SearchBar from './SearchBar';
+import Card from './Card';
+
+import './WeatherApp.css';
 
 const api = {
-    key: "SECRET",
+    key: "64f721e6b055f85f93db14042305834d",
     base: "http://api.openweathermap.org/data/2.5/"
   }
 
 function WeatherApp(){
-
-  const [query, setQuery] = useState('');
+  
   const [weather, setWeather] = useState({});
 
-  const search = evt => {
-    if (evt.key === "Enter") {
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+  const search = query => {
+
+      fetch(`${api.base}weather?q=${query}&units=metric&lang=fr&APPID=${api.key}`)
         .then(res => res.json())
         .then(result => {
           setWeather(result);
-          setQuery('');
           console.log(result);
         });
-    }
   }
+  
     return(
- <div className={(typeof weather.main != "undefined") ? ((weather.main.temp > 16) ? 'app warm' : 'app') : 'app'}>
       <main>
-          <input 
-            type="text"
-            className="search-bar"
-            placeholder="Search..."
-            onChange={e => setQuery(e.target.value)}
-            value={query}
-            onKeyPress={search}
-          />
-        {(typeof weather.main != "undefined") ? (
-        <div>
-            <div className="location">{weather.name}, {weather.sys.country}</div>
-            <div className="date"><DateBuilder/></div>
-            <div className="temp">
-              {Math.round(weather.main.temp)}°c
+      <SearchBar search={search}/>
+      {(weather.main) ? (
+        <section>
+          <Card weather={weather}/>
+          <div className="info-side">
+            <div className="humidity">
+              <span>humidity</span>
+              <span>{weather.main.humidity}%</span>
             </div>
-            <div className="weather">{weather.weather[0].main}</div>
-            <img src={"http://openweathermap.org/img/wn/" + weather.weather[0].icon + "@2x.png"}></img>
-        </div>
-        ) : ('')}
+            <div className="humidity">
+              <span>wind</span>
+              <span className="wind">{weather.wind.speed} km/h</span>
+            </div>
+          </div>
+        </section>
+      ) : null}
       </main>
-    </div>
     );
 }
 
