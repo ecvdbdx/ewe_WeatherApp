@@ -17,7 +17,7 @@ function SearchBar(props){
     <input 
         type="text"
         className="search-bar"
-        placeholder="Search..."
+        placeholder="Rechercher une ville, un pays..."
         value={query}
         onChange={ evt => setQuery(evt.target.value)}
         onKeyPress={handleKeyPress}
