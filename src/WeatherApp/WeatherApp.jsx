@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import DateBuilder from './DateBuilder';
 import SearchBar from './SearchBar';
 import Card from './Card';
+import Forecast from './Forecast';
 
 import './WeatherApp.css';
 
@@ -20,7 +21,7 @@ function WeatherApp(){
         console.log(results)
       })
     },
-    fetch(`${api.base}weather?q=New,York&units=metric&lang=fr&APPID=${api.key}`).then(function(response) {
+    fetch(`${api.base}weather?q=New York&units=metric&lang=fr&APPID=${api.key}`).then(function(response) {
       response.json()
       .then(res => {
         setWeatherNewYork(res)
@@ -32,6 +33,7 @@ function WeatherApp(){
   const [weatherParis, setWeatherParis] = useState({});
   const [weatherNewYork, setWeatherNewYork] = useState({});
   const [weather, setWeather] = useState({});
+  const [weatherForecast, setWeatherForecast] = useState({});
 
   const search = query => {
 
@@ -41,6 +43,16 @@ function WeatherApp(){
           setWeather(result);
           console.log(result);
         });
+      fetch(`${api.base}forecast?q=${query}&units=metric&lang=fr&APPID=${api.key}`)
+        .then(res => res.json())
+        .then(Forecastresult => {
+          setWeatherForecast(Forecastresult);
+          console.log(Forecastresult);
+        });
+
+        const forecast = weatherForecast.list;
+        console.log(forecast.dt_txt)
+      
   }
   
     return(
@@ -56,13 +68,21 @@ function WeatherApp(){
             <div className="weather-card">
               <Card weather={weather}/>
               <div className="info-side">
-                <div className="humidity">
-                  <span>humidity</span>
-                  <span>{weather.main.humidity}%</span>
+                <div>
+                  <div className="humidity">
+                    <span>humidity</span>
+                    <span>{weather.main.humidity}%</span>
+                  </div>
+                  <div className="humidity">
+                    <span>wind</span>
+                    <span className="wind">{weather.wind.speed} km/h</span>
+                  </div>
                 </div>
-                <div className="humidity">
-                  <span>wind</span>
-                  <span className="wind">{weather.wind.speed} km/h</span>
+                <div className="forecastContainer">
+                  <Forecast/>
+                  <Forecast/>
+                  <Forecast/>
+                  <Forecast/>
                 </div>
               </div>
             </div>
